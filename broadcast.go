@@ -20,6 +20,8 @@ type Broadcast struct {
 	Broadcast []User_info `json:"broadcast_field"`
 }
 
+var curtimestamp uint64
+
 type User_info struct {
 	Name string `json: "name"`
 	Mobile_no   int    `json: "mobile_no"`
@@ -48,8 +50,13 @@ func (h *waHandler) HandleError(err error) {
 	}
 }
 
-//Optional to be implemented. Implement HandleXXXMessage for the types you need.
+// HandleTextMessage Optional to be implemented. Implement HandleXXXMessage for the types you need.
 func (waHandler *waHandler) HandleTextMessage(message whatsapp.TextMessage) {
+
+	if curtimestamp > message.Info.Timestamp {
+		return
+	}
+
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.ContextInfo.QuotedMessageID, message.Text)
 
 		fmt.Println(message.Text)
@@ -124,6 +131,12 @@ func (waHandler *waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 
 
 func main() {
+
+	// timestamp to ensure only new messages are treated in handler
+	now := time.Now()
+	sec := now.Unix()
+	curtimestamp = uint64(sec)
+
 	//create new WhatsApp connection
 	wac, err := whatsapp.NewConn(3 * time.Second)
 	if err != nil {
