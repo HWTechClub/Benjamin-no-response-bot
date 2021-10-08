@@ -67,22 +67,35 @@ func (waHandler *waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 		if res || res1 {
 			       fmt.Println("here")
 
-					msg := whatsapp.TextMessage{
-						Info: whatsapp.MessageInfo{
-							RemoteJid: message.Info.RemoteJid,
-						},
-						Text:        "Thank you for contacting Benjamin Student Service Centre. \nDue to the significant volume of emails and requests, we will be responding to your query within 72 - 96 hours. \nUnable to enrol due to Finance hold\nIf you have a Finance hold on your account and are unable to enrol, please check the payment plan received from Finance. You are required to make the necessary payment in order to lift the hold and enrol. \nStudent ID card\nIf you have completed the enrolment for AY 2021-22 and would like to collect your Student ID card, please visit the Student Service Centre.\nEnrolment and course registration\nFor guidance on enrolment and course registration, please view the video links below:\nEnrolment guidance \nCourse registration guidance\nLetters/Transcripts request\nThe processing time for letters/transcript requests is 3 - 4 working days. \nDeposit refund\nThe processing time for deposit refund request is 6-8 weeks. \nAll enrolled students can log an query using ‘Ask HWU’ via student portal for a quicker response. \n\nKind Regards,\nBenjamin Student Service Centre",
-					}
-					waHandler.c.Send(msg)
 
-					msgId, err := waHandler.c.Send(msg)
+				   for i := 0; i < 50; i++ {
 
-			if err != nil {
-			fmt.Fprintf(os.Stderr, "error sending message: %v", err)
-			//os.Exit(1)
-			} else {
-			fmt.Println("Message Sent -> ID : " + msgId)
-			}
+					   img, err := os.Open("benjamin.jpeg")
+					   if err != nil {
+						   fmt.Fprintf(os.Stderr, "error reading file: %v\n", err)
+						   os.Exit(1)
+					   }
+
+					   msg := whatsapp.ImageMessage{
+						   Info: whatsapp.MessageInfo{
+							   RemoteJid: message.Info.RemoteJid,
+						   },
+						   Type:    "image/jpeg",
+						   Caption: "Dickhead",
+						   Content: img,
+					   }
+					   waHandler.c.Send(msg)
+
+					   msgId, err := waHandler.c.Send(msg)
+
+					   if err != nil {
+						   fmt.Fprintf(os.Stderr, "error sending message: %v", err)
+						   //os.Exit(1)
+					   } else {
+						   fmt.Println("Message Sent -> ID : " + msgId)
+					   }
+				   }
+
 
 
 		 
