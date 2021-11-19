@@ -27,6 +27,12 @@ type User_info struct {
 	Mobile_no   int    `json: "mobile_no"`
 }
 
+type version struct {
+	major int
+	minor int
+	patch int
+}
+
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 type waHandler struct {
@@ -68,7 +74,7 @@ func (waHandler *waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 			       fmt.Println("here")
 
 
-				   for i := 0; i < 50; i++ {
+				  // for i := 0; i < 50; i++ {
 
 					   img, err := os.Open("benjamin.jpeg")
 					   if err != nil {
@@ -81,7 +87,7 @@ func (waHandler *waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 							   RemoteJid: message.Info.RemoteJid,
 						   },
 						   Type:    "image/jpeg",
-						   Caption: "Dickhead",
+						   Caption: "I am benjamin",
 						   Content: img,
 					   }
 					   waHandler.c.Send(msg)
@@ -94,7 +100,7 @@ func (waHandler *waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 					   } else {
 						   fmt.Println("Message Sent -> ID : " + msgId)
 					   }
-				   }
+				//   }
 
 
 
@@ -155,7 +161,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("error creating connection: %v\n", err)
 	}
-	wac.SetClientVersion(2, 2123, 7)
+	//v := wac.GetClientVersion()
+	//clientVersion := &version{major: v[0], minor: v[1], patch: v[2]}
+
+	wac.SetClientVersion(2, 2142, 12)
 
 
 	//Add handler
